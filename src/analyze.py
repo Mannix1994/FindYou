@@ -45,7 +45,7 @@ class Fan(object):
                         return
                 elif item.get('class', None):
                     if item['class'] == ['S_txt1']:
-                        self.url = "https://weibo.com"+item['href']
+                        self.url = "https://weibo.com" + item['href']
                     pass
 
     def analysis_id(self, person_tag):
@@ -77,3 +77,7 @@ class Fan(object):
             if div_tag['class'] == ['info_from']:
                 from_tag = div_tag
                 self.fromInfo = from_tag.a.string
+
+    def __str__(self):
+        return "{sex: %s,address: %s,name: %s,id: %s, follow&fan: %s&%s,introduce: %s}" % \
+              (self.sex, self.address, self.name, self.id, self.followNumber, self.fansNumber, self.introduce)
