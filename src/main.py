@@ -7,6 +7,7 @@ import src.util as util
 import src.fans as fans
 import src.DBManager as DBManager
 import src.mail as mail
+import src.RequestHeader as RH
 
 
 def analyse_fans(header, the_url, her_info, db):
@@ -79,11 +80,6 @@ def get_more_info_of_fan(header, user_url, key_words, school_name):
 
 
 if __name__ == '__main__':
-    # 获取的cookie值存放在这
-    myHeader = {"Cookie":
-                    "SINAGLOBAL=2299334805014.0996.1525746172263; un=13281286897; YF-Page-G0=8fee13afa53da91ff99fc89cc7829b07; _s_tentry=login.sina.com.cn; UOR=www.php100.com,widget.weibo.com,login.sina.com.cn; Apache=8137578982260.887.1525847206335; ULV=1525847206359:2:2:2:8137578982260.887.1525847206335:1525746172283; YF-V5-G0=1312426fba7c62175794755e73312c7d; YF-Ugrow-G0=ad83bc19c1269e709f753b172bddb094; login_sid_t=2096f487fd973fb1a02be2350041eef6; cross_origin_proto=SSL; SSOLoginState=1525849379; wvr=6; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WFCn3AwfiBJQKEIXpN.PXZB5JpX5KMhUgL.Foq01K-41hz4e0M2dJLoIpHSwHSaUgphqg4XHsHjd8SXdNiD9Pet; ALF=1557483043; SCF=Ai-tW_4F5-J1Vz96_4-ZtLh_vlIxnApKRPrQHXsNjlnobMDpLIdQX_Bxyuu_u8agoXmbJcp0vdyEcn_RwsNuidw.; SUB=_2A2538Gr1DeRhGeBN4lcY-CzFyDuIHXVUhNs9rDV8PUNbmtBeLUzYkW9NRASQnGrWH0ynphfTtmYhIrYebCWcRKm5; SUHB=00xpwlrDDu2MlX"
-                }
-    # exit(0)
     # 要爬去的账号的粉丝列表页面的地址
     fans_url = 'https://weibo.com/p/1005052970452952/follow?relate=fans&from=100505&wvr=6&mod=headfans&current=fans#place'
 
@@ -102,5 +98,5 @@ if __name__ == '__main__':
                              password='lazy1994', db_name='her_info')
     # 分析粉丝
     while True:
-        analyse_fans(myHeader, fans_url, my_angel_info, db)
+        analyse_fans(RH.myHeader, fans_url, my_angel_info, db)
         time.sleep(random.randint(1, 5))
