@@ -6,6 +6,7 @@ import src.evaluate as analyse
 import src.util as util
 import src.fans as fans
 import src.DBManager as DBManager
+import src.mail as mail
 
 
 def analyse_fans(header, the_url, her_info, db):
@@ -29,12 +30,17 @@ def analyse_fans(header, the_url, her_info, db):
         if chance > 0:
             # 定义搜索关键词,越详细越准确越好
             key_words = her_info['key_words']
+            # print(key_words)
             # 获取该粉丝的更多信息
+            print('分析粉丝"%s"中...' % fan.name)
             match_school, count = get_more_info_of_fan(header, fan.url, key_words, '成都医学院')
             # print(match_school, count)
             if match_school or count > 0:
                 print('找到符合条件的粉丝', fan)
                 db.add_a_fan(fan, match_school, count)
+                mail.send_email(fan.__str__())
+            else:
+                print('分析完成,该粉丝不是我要找的')
 
     # get_more_info_of_fan(header, 'https://weibo.com/u/3840029822?refer_flag=1005050008_', ['成都医学院', '毕业'])
 
@@ -59,6 +65,13 @@ def get_more_info_of_fan(header, user_url, key_words, school_name):
         search_result_page = util.get_html(header=header, the_url=search_url)
         # 对结果页进行分析,获取学校是否匹配和符合关键词的微博数量
         result = fans.match_school_and_assay_count(search_result_page, school_name=school_name)
+        while result[1] == -1:  # 提示搜索太频繁
+            # 等一等
+            time.sleep(10)
+            # 获取搜索结果页
+            search_result_page = util.get_html(header=header, the_url=search_url)
+            # 对结果页进行分析,获取学校是否匹配和符合关键词的微博数量
+            result = fans.match_school_and_assay_count(search_result_page, school_name=school_name)
         # 整合结果
         match_school = match_school or result[0]
         match_assay_count += result[1]

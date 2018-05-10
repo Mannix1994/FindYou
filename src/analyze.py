@@ -23,7 +23,7 @@ class Fan(object):
         self.analysis_follow_and_fans_number(person_tag)
         self.analysis_city(person_tag)
         self.analysis_introduce(person_tag)
-        self.analysis_follow_way(person_tag)
+        # self.analysis_follow_way(person_tag)
         self.analysis_id(person_tag)
 
     def analysis_name(self, person_tag):
@@ -79,5 +79,6 @@ class Fan(object):
                 self.fromInfo = from_tag.a.string
 
     def __str__(self):
-        return "{sex: %s,address: %s,name: %s,id: %s, follow&fan: %s&%s,introduce: %s}" % \
-              (self.sex, self.address, self.name, self.id, self.followNumber, self.fansNumber, self.introduce)
+        return "{name: %s, sex: %s,address: %s,id: %s, follow&fan: %s&%s,introduce: %s, url: %s}" % \
+              (self.name, self.sex, self.address, self.id, self.followNumber,
+               self.fansNumber, self.introduce, self.url)

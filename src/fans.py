@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import time
 from bs4 import BeautifulSoup
 from src.analyze import Fan
 import json
@@ -69,14 +70,17 @@ def match_school_and_assay_count(html_str='', school_name='成都医学院'):
         if item.find('"domid":"Pl_Core_UserInfo__6"') > -1:
             loaded_html = json.loads(item)
             # 如果从个人信息栏里面找到学校名字,说明学校匹配了
-            if loaded_html['html'].find(school_name) > -1:
-                match_school = True
+            if loaded_html.get('html'):
+                if loaded_html['html'].find(school_name) > -1:
+                    match_school = True
         # 搜索微博列表块
         elif item.find('"domid":"Pl_Official_MyProfileFeed__20"') > -1:
             loaded_html = json.loads(item)
             # 如果从搜索到的微博列表中找到"找不到符合条件的微博",则说明该关键词搜索到的微博为0
             if loaded_html['html'].find('找不到符合条件的微博') > -1:
                 assay_count = 0
+            elif loaded_html['html'].find('你搜的太频繁了'):
+                return match_school, -1
             else:  # 否则,可以从其中解析出符合关键词的微博数量
                 # 通过美丽汤来解析
                 soup = BeautifulSoup(loaded_html['html'], 'lxml')
