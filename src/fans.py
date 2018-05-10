@@ -91,6 +91,13 @@ def match_school_and_assay_count(html_str='', school_name='成都医学院'):
 
 
 def get_json(json_draft):
+    """
+    去除多余的部分,得到json数据
+    微博的网页一般是分块的,然后每一块都是用js来处理json数据来得到最后的HTML文本,
+    因此这个函数的作用就是从分割后的网页部分字符串处理,得到json数据
+    :param json_draft: 含有其他成分的json字符串
+    :return: 处理完的字符串
+    """
     tag = '<script>FM.view'
     index = json_draft.find(tag)
     if index > -1:
@@ -102,35 +109,43 @@ def get_json(json_draft):
         return None
 
 
-def save_html(file_name, loaded_html):
-    soup = BeautifulSoup(loaded_html['html'], 'lxml')
+def save_html(file_name, html_str):
+    """
+    保存HTML文件
+    :param file_name: 文件名
+    :param html_str: 网页字符串
+    :return: 不返回
+    """
+    soup = BeautifulSoup(html_str, 'lxml')
     f = open(file_name, "w", encoding="UTF-8")
     f.write(soup.prettify())
     f.close()
 
 
 def get_all_json_and_save_html(html_str):
+    """
+    分割一个网页,保存其中每个人json数据代表的网页
+    :param html_str: 粉丝的主页啊,粉丝页等
+    :return: 空
+    """
     # 分割json脚本列表
     json_lists = html_str.split("</script>")
     i = 0
     for item in json_lists:
-        tag = '<script>FM.view'
-        index = item.find(tag)
-        if index > -1:
-            item = item[index + len(tag) + 1:len(item) - 1]
-            if item[-1] == ')':
-                item = item[:len(item) - 1]
+        item = get_json(item)
+        if not item:
+            continue
 
-            html_content = json.loads(item)
+        html_content = json.loads(item)
 
-            try:
-                soup = BeautifulSoup(html_content['html'], 'lxml')
-                soup.prettify()
-            except KeyError:
-                pass
-            else:
-                f = open("html/%s_%s.html" % (i, len(item)), "w", encoding="UTF-8")
-                f.write(soup.prettify())
+        try:
+            soup = BeautifulSoup(html_content['html'], 'lxml')
+            soup.prettify()
+        except KeyError:
             pass
+        else:
+            f = open("html/%s_%s.html" % (i, len(item)), "w", encoding="UTF-8")
+            f.write(soup.prettify())
+        pass
         i += 1
     pass
