@@ -7,7 +7,7 @@ import src.util as util
 import src.fans as fans
 import src.DBManager as DBManager
 import src.mail as mail
-import src.RequestHeader as RH
+import src.config as config
 
 
 def analyse_fans(header, the_url, her_info, db):
@@ -67,7 +67,7 @@ def get_more_info_of_fan(header, user_url, key_words, school_name):
         # 对结果页进行分析,获取学校是否匹配和符合关键词的微博数量
         result = fans.match_school_and_assay_count(search_result_page, school_name=school_name)
         while result[1] == -1:  # 提示搜索太频繁
-            # 等一等
+            # 等一等再继续搜索
             time.sleep(10)
             # 获取搜索结果页
             search_result_page = util.get_html(header=header, the_url=search_url)
@@ -80,23 +80,11 @@ def get_more_info_of_fan(header, user_url, key_words, school_name):
 
 
 if __name__ == '__main__':
-    # 要爬去的账号的粉丝列表页面的地址
-    fans_url = 'https://weibo.com/p/1005052970452952/follow?relate=fans&from=100505&wvr=6&mod=headfans&current=fans#place'
 
-    # 她的信息
-    my_angel_info = {'name_key_words': ['许', '珊', '许珊', '珊儿', '许珊儿'],
-                     'sex': 'female',
-                     'address': ['四川 成都', '四川 自贡'],
-                     'follow_max': 300,
-                     'follow_min': 5,
-                     'fans_max': 300,
-                     'fans_min': 5,
-                     'key_words': ['成都医学院', '成医', '毕业'],  # 定义搜索关键词,越详细越准确越好
-                     }
     # 初始化数据库
     db = DBManager.DBManager(host='localhost', port=3306, user='root',
                              password='lazy1994', db_name='her_info')
     # 分析粉丝
     while True:
-        analyse_fans(RH.myHeader, fans_url, my_angel_info, db)
+        analyse_fans(config.myHeader, config.fans_url, config.my_angel_info, db)
         time.sleep(random.randint(1, 5))
