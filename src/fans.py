@@ -15,10 +15,7 @@ def get_fans_list(html_str):
     # 通过script来切割后边的几个通过js来显示的json数组
     fans_json_list = html_str.split("</script>")
 
-    # 因为在测试的时候，发现微博每一次返回的dom的顺序不一样，粉丝列表的dom和一个其他内容的dom的位置一直交替，所以在这加了一个判断
-    # fans_json = fans_json_list[-2][17:-1] if fans_json_list[-2][17:-1].__len__() > fans_json_list[-3][
-    #                                                                               17:-1].__len__() else fans_json_list[-3][17:-1]
-
+    # 找到包含粉丝信息的那个json数据块
     fans_json = {}
     for item in fans_json_list:
         item = get_pure_json(item)
@@ -55,10 +52,10 @@ def get_fans_list(html_str):
     return fans
 
 
-def match_school_and_assay_count(html_str='', school_name='成都医学院'):
+def match_school_and_assay_count(search_result_page='', school_name='成都医学院'):
     """
     从搜索结果页中解析学校是否匹配和指定关键词的微博数量
-    :param html_str: 指定关键词的搜索结果HTML文件
+    :param search_result_page: 指定关键词的搜索结果HTML文件
     :param school_name: 学校名字
     :return: 返回学校是佛匹配和符合关键词的数量
     """
@@ -66,7 +63,7 @@ def match_school_and_assay_count(html_str='', school_name='成都医学院'):
     assay_count = 0  # 符合关键词的微博的数量
 
     # 分割json脚本列表
-    json_lists = html_str.split("</script>")
+    json_lists = search_result_page.split("</script>")
 
     for item in json_lists:
         # 去除多余的部分,得到json数据,不懂的把上下两部分打印出来就知道
@@ -99,6 +96,45 @@ def match_school_and_assay_count(html_str='', school_name='成都医学院'):
                         # 找到class = 'W_fb S_spetxt'的那个标签,里面的数字就是通过该关键词搜索到的微博总数
                         if em['class'] == ['W_fb', 'S_spetxt']:
                             assay_count = int(em.string)
+    return match_school, assay_count
+
+
+def find_school_and_search_key_words_in_assays(assay_page, school_name, key_words):
+    """
+    在微博主页中获取学校是否匹配;搜索微博中符合关键词的微博数量
+    :param assay_page: 粉丝主页
+    :param school_name: 学校名字
+    :param key_words: 关键词list
+    :return: 学校是否匹配和关键词数量
+    """
+    match_school = False  # 学校是否匹配
+    assay_count = 0  # 符合关键词的微博的数量
+
+    # 分割json脚本列表
+    json_lists = assay_page.split("</script>")
+
+    for item in json_lists:
+        # 去除多余的部分,得到json数据,不懂的把上下两部分打印出来就知道
+        item = get_pure_json(item)
+        if not item:
+            continue
+
+        # 基本信息栏
+        if item.find('"domid":"Pl_Core_UserInfo__6"') > -1:
+            loaded_html = json.loads(item)
+            # 如果从个人信息栏里面找到学校名字,说明学校匹配了
+            if loaded_html.get('html'):
+                if loaded_html['html'].find(school_name) > -1:
+                    match_school = True
+        # 微博列表页
+        elif item.find('"domid":"Pl_Official_MyProfileFeed__20') > -1:
+            loaded_html = json.loads(item)
+            html_str = loaded_html['html']
+            for key_word in key_words:
+                # 这里使用一个巧妙的方式来搜索指定关键词出现的数量
+                # 以关键词分割字符串,得出的list长度再减一,就得到关键词出现的次数
+                assay_count += len(html_str.split(key_word))-1
+
     return match_school, assay_count
 
 

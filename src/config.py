@@ -19,6 +19,9 @@ myHeader = {
 # 要爬去的账号的粉丝列表页面的地址
 fans_url = 'https://weibo.com/p/1005052970452952/follow?relate=fans&from=100505&wvr=6&mod=headfans&current=fans#place'
 
+#
+bozhu_id = '1005052970452952'
+
 # 她的信息
 my_angel_info = {'name_key_words': ['许', '珊', '许珊', '珊儿', '许珊儿'],
                  'sex': 'female',
