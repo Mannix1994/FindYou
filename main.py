@@ -157,7 +157,7 @@ if __name__ == '__main__':
                 break
             except TypeError:
                 traceback.print_exc()
-                mail.send_email('用户可能被踢下线了，请检查服务器')
+                mail.send_email('用户可能被踢下线了，请检查服务器,,.')
                 break
             # 如果是其他异常,继续执行
             except Exception:
