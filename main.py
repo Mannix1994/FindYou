@@ -27,7 +27,7 @@ def analyse_fans(header, the_url, her_info, db):
     for fan in fan_list:
         # 评估这个人的是我要找的人的可能性
         chance = analyse.evaluate(fan.__dict__, her_info)
-        # print(fan)
+        print(fan)
         if chance > 0:
             # 定义搜索关键词,越详细越准确越好
             key_words = her_info['key_words']
@@ -84,7 +84,11 @@ if __name__ == '__main__':
     # 初始化数据库
     db = DBManager.DBManager(host='localhost', port=3306, user='root',
                              password='lazy1994', db_name='her_info')
-    # 分析粉丝
-    while True:
-        analyse_fans(config.myHeader, config.fans_url, config.my_angel_info, db)
-        time.sleep(random.randint(1, 5))
+    try:
+        # 分析粉丝
+        while True:
+            analyse_fans(config.myHeader, config.fans_url, config.my_angel_info, db)
+            time.sleep(random.randint(1, 5))
+    except KeyboardInterrupt as e:
+        print('关闭数据库连接中...')
+        db.close()

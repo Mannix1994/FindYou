@@ -16,9 +16,17 @@ def get_fans_list(html_str):
     fans_json_list = html_str.split("</script>")
 
     # 因为在测试的时候，发现微博每一次返回的dom的顺序不一样，粉丝列表的dom和一个其他内容的dom的位置一直交替，所以在这加了一个判断
-    fans_json = fans_json_list[-2][17:-1] if fans_json_list[-2][17:-1].__len__() > fans_json_list[-3][
-                                                                                   17:-1].__len__() else fans_json_list[
-                                                                                                             -3][17:-1]
+    # fans_json = fans_json_list[-2][17:-1] if fans_json_list[-2][17:-1].__len__() > fans_json_list[-3][
+    #                                                                               17:-1].__len__() else fans_json_list[-3][17:-1]
+
+    fans_json = {}
+    for item in fans_json_list:
+        item = get_pure_json(item)
+        if not item:
+            continue
+        if item.find('"domid":"Pl_Official_HisRelation__59"') > -1:
+            fans_json = item
+            pass
 
     # print(tmpJson)
     fans_html = json.loads(fans_json)
@@ -62,7 +70,7 @@ def match_school_and_assay_count(html_str='', school_name='成都医学院'):
 
     for item in json_lists:
         # 去除多余的部分,得到json数据,不懂的把上下两部分打印出来就知道
-        item = get_json(item)
+        item = get_pure_json(item)
         if not item:
             continue
 
@@ -94,7 +102,7 @@ def match_school_and_assay_count(html_str='', school_name='成都医学院'):
     return match_school, assay_count
 
 
-def get_json(json_draft):
+def get_pure_json(json_draft):
     """
     去除多余的部分,得到json数据
     微博的网页一般是分块的,然后每一块都是用js来处理json数据来得到最后的HTML文本,
@@ -136,7 +144,7 @@ def get_all_json_and_save_html(html_str):
     json_lists = html_str.split("</script>")
     i = 0
     for item in json_lists:
-        item = get_json(item)
+        item = get_pure_json(item)
         if not item:
             continue
 
