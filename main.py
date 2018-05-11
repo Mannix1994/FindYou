@@ -3,6 +3,8 @@
 import time
 import random
 import traceback
+import requests.exceptions as re
+import urllib3.exceptions as ue
 import src.evaluate as analyse
 import src.util as util
 import src.fans as fans
@@ -27,6 +29,7 @@ def analyse_fans(header, the_url, her_info, db):
     # print("找到粉丝%s个" % len(fan_list))
     # 目前只截取一个
     first_fan = [fan_list[0], ]
+    print('找到粉丝:%s' % first_fan.__str__())
     for fan in first_fan:
         # 评估这个人的是我要找的人的可能性
         chance = analyse.evaluate(fan.__dict__, her_info)
@@ -138,20 +141,26 @@ if __name__ == '__main__':
         # 分析粉丝
         i = 1
         while True:
-            print('第%d次尝试' % i)
-            for index in range(1, 2):
-                # 生成url
-                fans_list_url = "https://weibo.com/p/%s/follow?relate=fans&page=%d#Pl_Official_HisRelation__59" % \
-                                (config.bozhu_id, index)
-                # print(fans_list_url)
-                analyse_fans(config.myHeader, fans_list_url, config.my_angel_info, db)
-                time.sleep(random.randint(1, 5))
-            time.sleep(random.randint(10, 15))
-            i += 1
+            try:
+                print('第%d次尝试' % i)
+                for index in range(1, 2):
+                    # 生成url
+                    fans_list_url = "https://weibo.com/p/%s/follow?relate=fans&page=%d#Pl_Official_HisRelation__59" % \
+                                    (config.bozhu_id, index)
+                    # print(fans_list_url)
+                    analyse_fans(config.myHeader, fans_list_url, config.my_angel_info, db)
+                    time.sleep(random.randint(1, 5))
+                time.sleep(random.randint(10, 15))
+                i += 1
+            # 如果是网络异常,停止执行
+            except re.ConnectionError:
+                traceback.print_exc()
+                break
+            # 如果是其他异常,继续执行
+            except Exception:
+                traceback.print_exc()
     except KeyboardInterrupt as e:
         print('用户选择退出...')
-    except Exception:
-        traceback.print_exc()
     finally:
         print('关闭数据库连接中...')
         db.close()

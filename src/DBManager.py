@@ -44,15 +44,16 @@ class DBManager:
 
     def add_a_fan(self, fan, match_school, assay_count):
         user_str = 'SELECT id FROM her WHERE id = \'%s\';' % fan.id
-        print(user_str)
+        # print(user_str)
         user_exist = self.cursor.execute(user_str)
-        print(user_exist)
+        # print(user_exist)
         if user_exist == 0:
             add_str = 'INSERT INTO her(wei_id,name,url,match_school,assay_count) \
                                VALUES (\'%s\',\'%s\',\'%s\',%s,%d)' % \
                       (fan.id, fan.name, fan.url, match_school, assay_count)
             self.cursor.execute(add_str)
             self.conn.commit()
+        print('写入数据库完成', fan)
 
     def close(self):
         self.cursor.close()
