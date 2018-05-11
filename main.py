@@ -4,7 +4,6 @@ import time
 import random
 import traceback
 import requests.exceptions as re
-import urllib3.exceptions as ue
 import src.evaluate as analyse
 import src.util as util
 import src.fans as fans
@@ -29,7 +28,7 @@ def analyse_fans(header, the_url, her_info, db):
     # print("找到粉丝%s个" % len(fan_list))
     # 目前只截取一个
     first_fan = [fan_list[0], ]
-    print('找到粉丝:%s' % first_fan.__str__())
+    # print('找到粉丝:%s' % first_fan[0].__str__())
     for fan in first_fan:
         # 评估这个人的是我要找的人的可能性
         chance = analyse.evaluate(fan.__dict__, her_info)
