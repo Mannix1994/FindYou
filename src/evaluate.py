@@ -5,8 +5,8 @@
 def evaluate(info, her_info):
     probability = 0
 
-    # sex
-    if info['sex'] == her_info['sex']:
+    # gender
+    if info['gender'] == her_info['gender']:
         probability += 1
     else:
         return 0

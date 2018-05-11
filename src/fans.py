@@ -59,6 +59,7 @@ def match_school_and_assay_count(search_result_page='', school_name='成都医�
     :param school_name: 学校名字
     :return: 返回学校是佛匹配和符合关键词的数量
     """
+    print('正在匹配学校和搜索关键词...')
     match_school = False  # 学校是否匹配
     assay_count = 0  # 符合关键词的微博的数量
 
@@ -107,6 +108,7 @@ def find_school_and_search_key_words_in_assays(assay_page, school_name, key_word
     :param key_words: 关键词list
     :return: 学校是否匹配和关键词数量
     """
+    print('正在匹配学校和在用户的微博中查找关键词...')
     match_school = False  # 学校是否匹配
     assay_count = 0  # 符合关键词的微博的数量
 

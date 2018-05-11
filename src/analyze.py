@@ -6,7 +6,7 @@
 class Fan(object):
     def __init__(self, person_tag=None):
         self.name = None
-        self.sex = None
+        self.gender = None
         self.url = None
         self.id = None
         self.address = None
@@ -38,10 +38,10 @@ class Fan(object):
                 # print(item)
                 if item.i:
                     if item.i['class'] == ["W_icon", "icon_female"]:
-                        self.sex = 'female'
+                        self.gender = 'female'
                         return
                     elif item.i['class'] == ["W_icon", "icon_male"]:
-                        self.sex = 'male'
+                        self.gender = 'male'
                         return
                 elif item.get('class', None):
                     if item['class'] == ['S_txt1']:
@@ -79,6 +79,6 @@ class Fan(object):
                 self.fromInfo = from_tag.a.string
 
     def __str__(self):
-        return "{name: %s, sex: %s,address: %s,id: %s, follow&fan: %s&%s,introduce: %s, url: %s}" % \
-              (self.name, self.sex, self.address, self.id, self.followNumber,
+        return "{name: %s, gender: %s,address: %s,id: %s, follow&fan: %s&%s,introduce: %s, url: %s}" % \
+              (self.name, self.gender, self.address, self.id, self.followNumber,
                self.fansNumber, self.introduce, self.url)

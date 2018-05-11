@@ -28,7 +28,7 @@ def analyse_fans(header, the_url, her_info, db):
     # print("找到粉丝%s个" % len(fan_list))
     # 目前只截取一个
     first_fan = [fan_list[0], ]
-    # print('找到粉丝:%s' % first_fan[0].__str__())
+    print('找到粉丝:%s' % first_fan[0].__str__())
     for fan in first_fan:
         # 评估这个人的是我要找的人的可能性
         chance = analyse.evaluate(fan.__dict__, her_info)
@@ -121,7 +121,7 @@ def find_more_info_in_fan_assays(header, fan, key_words, school_name):
     page_count = int(fan.assay) // 40 + 1
     for page_index in range(1, page_count + 1):
         assay_url = fan.url + "&is_search=0&visible=0&is_all=1&is_tag=0&profile_ftype=1&page=%d#feedtop" % page_index
-        print(assay_url)
+        # print(assay_url)
         assay_result_page = util.get_html(header, assay_url)
         result = fans.find_school_and_search_key_words_in_assays(assay_result_page, school_name, key_words)
         # 整合结果
@@ -154,6 +154,10 @@ if __name__ == '__main__':
             # 如果是网络异常,停止执行
             except re.ConnectionError:
                 traceback.print_exc()
+                break
+            except TypeError:
+                traceback.print_exc()
+                mail.send_email('用户可能被踢下线了，请检查服务器')
                 break
             # 如果是其他异常,继续执行
             except Exception:
