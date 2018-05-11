@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import time
 from bs4 import BeautifulSoup
-from src.analyze import Fan
+from .analyze import Fan
 import json
 
 

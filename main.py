@@ -75,9 +75,9 @@ def search_more_info_of_fan(header, user_url, key_words, school_name):
             if i == 3:
                 # 都重复第三次了,不搜索了,直接返回-1
                 return match_school, -1
-            print('微博提示我搜索太频繁了,休眠10s以上的随机再继续搜')
+            print('微博提示我搜索太频繁了,休眠5s以上的随机再继续搜')
             # 获取一个随机等待时间
-            wait_time = random.randint(10, 20)
+            wait_time = random.randint(5, 10)
             # 等一等再继续搜索
             time.sleep(wait_time)
             # 获取搜索结果页
@@ -107,6 +107,7 @@ def find_more_info_in_fan_assays(header, fan, key_words, school_name):
     page_count = int(fan.assay) // 40 + 1
     for page_index in range(1, page_count + 1):
         assay_url = fan.url + "&is_search=0&visible=0&is_all=1&is_tag=0&profile_ftype=1&page=%d#feedtop" % page_index
+        print(assay_url)
         assay_result_page = util.get_html(header, assay_url)
         result = fans.find_school_and_search_key_words_in_assays(assay_result_page, school_name, key_words)
         # 整合结果
@@ -128,7 +129,7 @@ if __name__ == '__main__':
                 # 生成url
                 fans_list_url = "https://weibo.com/p/%s/follow?relate=fans&page=%d#Pl_Official_HisRelation__59" % \
                                 (config.bozhu_id, index)
-                print(fans_list_url)
+                # print(fans_list_url)
                 analyse_fans(config.myHeader, fans_list_url, config.my_angel_info, db)
                 time.sleep(random.randint(1, 5))
             time.sleep(random.randint(10, 15))
