@@ -23,6 +23,8 @@ def analyse_fans(header, the_url, her_info, db):
     """
     # 获取博主粉丝页的html文件
     html_str = util.get_html(header=header, the_url=the_url)
+
+    # -----------------------------第1步-------------------------------------------------
     # 获取粉丝列表
     fan_list = fans.get_fans_list(html_str)
     # print("找到粉丝%s个" % len(fan_list))
@@ -30,10 +32,12 @@ def analyse_fans(header, the_url, her_info, db):
     first_fan = [fan_list[0], ]
     print(('找到粉丝:%s' % first_fan[0].__str__()).encode('gbk', 'ignore').decode('gbk'))
     for fan in first_fan:
+        # ------------------------第2步-------------------------------------------------
         # 评估这个人的是我要找的人的可能性
         chance = analyse.evaluate(fan.__dict__, her_info)
         # print(fan)
         if chance > 0:
+            # --------------------第3.2步-----------------------------------------------
             # 定义搜索关键词,越详细越准确越好
             key_words = her_info['key_words']
             # print(key_words)
@@ -41,14 +45,18 @@ def analyse_fans(header, the_url, her_info, db):
             print('分析粉丝"%s"中...' % fan.name)
             match_school, count = search_more_info_of_fan(header, fan.url, key_words, '成都医学院')
             # print(match_school, count)
+
             if count == -1 and not match_school:  # 因为搜索太频繁返回,转向搜索用户的所有微博
                 print('搜索用户的所有微博中...')
+                # --------------------第4.1步---------------------------------------------
                 match_school, count = find_more_info_in_fan_assays(header, fan, key_words, '成都医学院')
             if match_school or count > 0:
+                # --------------------第5.1步----------------------------------------------
                 print('找到符合条件的粉丝', fan)
                 db.add_a_fan(fan, match_school, count)
                 mail.send_email(fan.__str__())
             else:
+                # --------------------第5.2步----------------------------------------------
                 print('分析完成,该粉丝不是我要找的')
 
     # get_more_info_of_fan(header, 'https://weibo.com/u/3840029822?refer_flag=1005050008_', ['成都医学院', '毕业'])
@@ -81,23 +89,6 @@ def search_more_info_of_fan(header, user_url, key_words, school_name):
                 return match_school, -1
             else:
                 return match_school, match_assay_count
-        """
-        for i in range(0, 4):
-            if result[1] != -1:  # 没有提示搜索太频繁
-                break
-            if i == 3:
-                # 都重复第三次了,不搜索了,直接返回-1
-                return match_school, -1
-            print('微博提示我搜索太频繁了,休眠5s以上的随机再继续搜')
-            # 获取一个随机等待时间
-            wait_time = random.randint(5, 10)
-            # 等一等再继续搜索
-            time.sleep(wait_time)
-            # 获取搜索结果页
-            search_result_page = util.get_html(header=header, the_url=search_url)
-            # 对结果页进行分析,获取学校是否匹配和符合关键词的微博数量
-            result = fans.match_school_and_assay_count(search_result_page, school_name=school_name)
-        """
         # 整合结果
         match_school = match_school or result[0]
         match_assay_count += result[1]
@@ -131,8 +122,7 @@ def find_more_info_in_fan_assays(header, fan, key_words, school_name):
     pass
 
 
-if __name__ == '__main__':
-
+def main():
     # 初始化数据库
     db = DBManager.DBManager(host='localhost', port=3306, user='root',
                              password='lazy1994', db_name='her_info')
@@ -142,19 +132,27 @@ if __name__ == '__main__':
         while True:
             try:
                 print('第%d次尝试' % i)
+                """
+                其实这个for循环至执行了一次，一开始以为刷新一次，粉丝会随机更新，实际上
+                每刷新一次，最新的粉丝就是第一页的第一个，然后前面的粉丝会往后面推。
+                """
                 for index in range(1, 2):
-                    # 生成url
+                    # 生成“李子柒”粉丝页的url
                     fans_list_url = "https://weibo.com/p/%s/follow?relate=fans&page=%d#Pl_Official_HisRelation__59" % \
                                     (config.bozhu_id, index)
                     # print(fans_list_url)
+                    # 分析粉丝
                     analyse_fans(config.myHeader, fans_list_url, config.my_angel_info, db)
+                    # 等待一段时间，避免被服务器发现是爬虫
                     time.sleep(random.randint(1, 5))
+                # 等待一段时间
                 time.sleep(random.randint(10, 15))
                 i += 1
             # 如果是网络异常,停止执行
             except re.ConnectionError:
                 traceback.print_exc()
                 break
+            # 可能设计用户被踢下线了
             except TypeError:
                 traceback.print_exc()
                 mail.send_email('用户可能被踢下线了，请检查服务器,,.')
@@ -167,3 +165,7 @@ if __name__ == '__main__':
     finally:
         print('关闭数据库连接中...')
         db.close()
+
+
+if __name__ == '__main__':
+    main()
