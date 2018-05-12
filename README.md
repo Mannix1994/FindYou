@@ -64,7 +64,7 @@ pip install BeautifulSoup4  # 解析HTML文件，从其中提取信息
 32 </body>
 33
 34 <script>
-35     var FM=js脚本
+35     var FM='js脚本'
 36 </script>
 37 <script>FM.view({"domid":"pl_lib",内容...});</script>
 38 <script>FM.view({"ns":"pl.common.webim","domid":"pl_common_webim",内容...})</script>
