@@ -28,7 +28,7 @@ def analyse_fans(header, the_url, her_info, db):
     # print("找到粉丝%s个" % len(fan_list))
     # 目前只截取一个
     first_fan = [fan_list[0], ]
-    print('找到粉丝:%s' % first_fan[0].__str__())
+    print(('找到粉丝:%s' % first_fan[0].__str__()).encode('gb18030', 'ignore').decode('gb18030'))
     for fan in first_fan:
         # 评估这个人的是我要找的人的可能性
         chance = analyse.evaluate(fan.__dict__, her_info)
