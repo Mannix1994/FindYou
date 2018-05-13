@@ -297,7 +297,7 @@ class Fan(object):
         if info_tag:
             # 在info_tag中找到所有的<a ...>...</a>
             for tag_a in info_tag.find_all('a'):
-                # 如果标签a包含<i ...>...<./i>这个标签，就是包含性别信息的标签a。
+                # 如果标签a包含<i ...>...</i>这个标签，就是包含性别信息的标签a。
                 if tag_a.i:
                     # 如果<i ...>的class属性等于'W_icon icon_female'，就是女性
                     if tag_a.i['class'] == ["W_icon", "icon_female"]:
@@ -369,3 +369,13 @@ class Fan(object):
 匹配和微博数量等于0，说明这个人不是我要找的，返回第1步。}  
   入口函数为main.py的main函数，main函数包含了一个while循环，是个死循环，这个
 循环的作用就是一直调用analyse_fans()函数来完成获取粉丝和匹配粉丝信息这个过程。
+
+## 四、关于作者 ##
+
+```javascript
+  var whoAmI = {
+    name   : "Mannix1994",
+    gitee  : "https://gitee.com/Mannix1994",
+    github : "https://github.com/Mannix1994"
+  }
+```
