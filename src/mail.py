@@ -38,8 +38,8 @@ def send_email(mail_subject, mail_content):
     txt = email.mime.text.MIMEText(mail_content)
     msg.attach(txt)
 
-    smtp_server = smtplib.SMTP()
-    smtp_server.connect(host, '25')
+    smtp_server = smtplib.SMTP_SSL()
+    smtp_server.connect(host, 465)
     smtp_server.login(sender, password)
     smtp_server.sendmail(sender, receiver, msg.as_string())
     smtp_server.quit()
