@@ -44,8 +44,8 @@ my_db_config = {'host': '你的数据库服务器ip',
                 }
 
 # 邮箱配置
-my_email_config = {'host': 'smtp.163.com',              # 设置服务器
-                   'sender': '13281286897@163.com',     # 发件人
-                   'password': 'qazwsx123',             # 发件人密码
-                   'receiver': '2311136142@qq.com',     # 收件人
+my_email_config = {'host': 'smtp.163.com',              # 设置服务器，可换成其他服务器
+                   'sender': 'you_email@163.com',       # 发件人
+                   'password': 'auth_path',             # 163邮箱的客户端授权密码，不是邮箱密码，怎么设置可自行百度
+                   'receiver': 'receiver@qq.com',       # 收件人
                    }

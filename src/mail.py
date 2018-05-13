@@ -38,16 +38,21 @@ def send_email(mail_subject, mail_content):
     txt = email.mime.text.MIMEText(mail_content)
     msg.attach(txt)
 
+    # 这里要使用SSL
     smtp_server = smtplib.SMTP_SSL()
     smtp_server.connect(host, 465)
+    # 登录
     smtp_server.login(sender, password)
+    # 发送邮件
     smtp_server.sendmail(sender, receiver, msg.as_string())
+    # 退出
     smtp_server.quit()
     print('邮件发送成功，主题：%s' % mail_subject)
 
 
 if __name__ == "__main__":
+    subject = "想你了"
     content = '''
            你好，小明
        '''
-    send_email("想你了", content)
+    send_email(subject, content)
