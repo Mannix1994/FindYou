@@ -174,4 +174,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    mail.send_email('我好想你，你在哪里', 'my lover')
+    # main()

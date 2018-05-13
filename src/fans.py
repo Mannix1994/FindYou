@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import time
 from bs4 import BeautifulSoup
-from .analyze import Fan
 import json
+from .analyze import Fan
 
 
 def get_fans_list(html_str):
