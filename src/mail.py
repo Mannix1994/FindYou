@@ -7,10 +7,10 @@ import email.mime.text
 # 这里需要导入自己的信息
 try:
     # from config import my_email_config
-    from config_backup import my_email_config
+    from config_private import my_email_config
 except ImportError:
     # from .config import my_email_config
-    from .config_backup import my_email_config
+    from .config_private import my_email_config
 
 
 def send_email(mail_subject, mail_content):

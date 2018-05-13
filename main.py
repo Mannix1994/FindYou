@@ -12,7 +12,7 @@ import src.mail as mail
 
 # 这里需要导入自己的信息
 # import src.config as config
-import src.config_backup as config
+import src.config_private as config
 
 
 def analyse_fans(header, the_url, her_info, db):
