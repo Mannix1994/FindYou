@@ -57,7 +57,7 @@ def analyse_fans(header, the_url, her_info, db):
                 # --------------------第5.1步----------------------------------------------
                 print('找到符合条件的粉丝', fan)
                 db.add_a_fan(fan, match_school, count)
-                mail.send_email(fan.__str__())
+                mail.send_email('找到符合条件的粉丝', fan.__str__())
             else:
                 # --------------------第5.2步----------------------------------------------
                 print('分析完成,该粉丝不是我要找的')
@@ -161,7 +161,7 @@ def main():
             # 可能设计用户被踢下线了
             except TypeError:
                 traceback.print_exc()
-                mail.send_email('用户可能被踢下线了，请检查服务器,,.')
+                mail.send_email('错误信息', '用户可能被踢下线了，请检查服务器,,.')
                 break
             # 如果是其他异常,继续执行
             except Exception:
