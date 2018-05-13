@@ -7,44 +7,56 @@ import json
 
 def get_fans_list(html_str):
     """
-    从html文本中解析出粉丝
-    :param html_str: 含有粉丝的网页文件
+    从博主的粉丝页html源码中解析出粉丝
+    :param html_str: 含有粉丝的网页，模板在README.md文件中
     :return: 返回粉丝的一个list
     """
-
-    # 通过script来切割后边的几个通过js来显示的json数组
+    # 分割html网页，得到一些包含json数据的字符串
     fans_json_list = html_str.split("</script>")
 
-    # 找到包含粉丝信息的那个json数据块
-    fans_json = {}
+    # 找到包含粉丝信息的那个json字符串
+    json_str = {}
     for item in fans_json_list:
+        # 去除"FM.view"等其他字符，得到一个json格式的字符串
         item = get_pure_json(item)
+        # 如果是空，则继续处理下一个数据
         if not item:
             continue
+        # "domid":"Pl_Official_HisRelation__59"是一个粉丝信息页的
+        # 那一行的一个独特的标识，其他行的都不同，如果一个json字符
+        # 串包含这个字符串，那么这个json对象就包含粉丝信息。要获取
+        # 其他信息，也可以通过该行的一个独特的标识来定位。
         if item.find('"domid":"Pl_Official_HisRelation__59"') > -1:
-            fans_json = item
-            pass
+            json_str = item
 
-    # print(tmpJson)
-    fans_html = json.loads(fans_json)
+    # 载入json格式字符串，得到一个dictionary
+    json_data = json.loads(json_str)
+    # print(fans_html)
 
-    # 解析
-    soup = BeautifulSoup(fans_html['html'], 'lxml')
+    # 使用BeautifulSoup解析，json_data['html']是网页数据，'lxml'是
+    # 解析html的引擎。关于BeautifulSoup的使用，大家可自行查看文档。
+    soup = BeautifulSoup(json_data['html'], 'lxml')
 
-    # 预处理
+    # 预处理，打印soup.prettify()的结果，就会看到一个格式化好的html文件
     soup.prettify()
+    # print(soup.prettify())
     # 写入文件
     # f = open("html/test.html", "w", encoding="UTF-8")
     # f.write(soup.prettify())
-    # print(soup.prettify())
 
-    # 找到包含粉丝列表的div
+    # 获取html文件里的粉丝
     fans = []
     for div_tag in soup.find_all('div'):
+        # 找到包含粉丝列表的div，下面是包含粉丝信息的网页数据形式
+        # <div class = 'follow_inner'>
+        #   <ul><li><dl>第一个粉丝的信息</dl></li></ul>
+        #   <ul><li><dl>第一个粉丝的信息</dl></li></ul>
+        #   ...
+        # </div>
         if div_tag['class'] == ["follow_inner"]:
-            # 提取粉丝
-            for person_div in div_tag.find_all('dl'):
-                p = Fan(person_div)
+            # 提取粉丝,'dl'标签里就是粉丝的信息
+            for fan_dl in div_tag.find_all('dl'):
+                p = Fan(fan_dl)
                 # print(p.__dict__)
                 fans.append(p)
             break

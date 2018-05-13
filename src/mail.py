@@ -44,6 +44,5 @@ if __name__ == "__main__":
            这是一封自动发送的邮件。
            www.ustchacker.com
        '''
-    # send_email(content)
-    print(len(content.split('m'))-1)
+    send_email(content)
 

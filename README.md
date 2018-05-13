@@ -28,12 +28,12 @@ pip install lxml  # 解析引擎，在BeautifulSoup4中被使用
 pip install BeautifulSoup4  # 解析HTML文件，从其中提取信息
 ```
   1. 爬取“李子柒”的粉丝页  
-  分析粉丝主页HTML的结构
+  * 分析粉丝主页HTML的结构
 ```html
 1  <!doctype html>
 2  <html>
 3  <head>
-4  其他头部信息。。。。
+4  <!---其他头部信息。。。。-->
 5  <title>李子柒的微博_微博</title>
 6
 7  <!-- $CONFIG -->
@@ -86,6 +86,8 @@ pip install BeautifulSoup4  # 解析HTML文件，从其中提取信息
 器渲染以后，会加载到页面中指定的位置。那么，我是怎么确定我要找的粉丝内容在48行
 的？答案就是打开粉丝页，查看网页源码，然后Ctrl+F查找一个粉丝的信息，比如id，就
 能发现这个id出现在第48行，这样，我就知道粉丝的信息在48行的js脚本里了。观察48行
+可以看出"domid":"Pl_Official_HisRelation__59"是该行特有的字符串，不管粉丝的信
+息怎么变，这段字符串是不变的，因此可以通过find函数来确定是否是粉丝信息所在行。
 可以看出，FM.view()是一个函数，参数是一个json数据(类似于python中的Dictionary，
 也就是键值对)，包含粉丝信息的网页数据，就在这个json数据里(粉丝信息对应的key是
 'html'),所以，在python中，我们可以提取出FM.view()的参数A，然后编写代码
@@ -93,7 +95,234 @@ pip install BeautifulSoup4  # 解析HTML文件，从其中提取信息
 里面的网页数据可通过如下代码获取```html_data = json_data['html']```，
 ```html_data```就是包含粉丝信息的网页。然后就可以使用BeautifulSoup来解析网页从
 其中提取你想要的信息。微博的其他网页的结构和这个类似(当然，这里指的是电脑版的
-微博，手机版的不知道是否相同)，具体的代码请看项目中函数的注释，都是非常详细的了。  
+微博，手机版的不知道是否相同)，具体的代码请看项目中函数的注释，都是非常详细的了。
+  * 看懂以下两段代码，解析微博的页面就不成问题了  
+  解析一页的粉丝
+```python
+def get_fans_list(html_str):
+    """
+    从博主的粉丝页html源码中解析出粉丝
+    :param html_str: 含有粉丝的网页，模板在README.md文件中
+    :return: 返回粉丝的一个list
+    """
+    # 分割html网页，得到一些包含json数据的字符串
+    fans_json_list = html_str.split("</script>")
+
+    # 找到包含粉丝信息的那个json字符串
+    json_str = {}
+    for item in fans_json_list:
+        # 去除"FM.view"等其他字符，得到一个json格式的字符串
+        item = get_pure_json(item)
+        # 如果是空，则继续处理下一个数据
+        if not item:
+            continue
+        # "domid":"Pl_Official_HisRelation__59"是一个粉丝信息页的
+        # 那一行的一个独特的标识，其他行的都不同，如果一个json字符
+        # 串包含这个字符串，那么这个json对象就包含粉丝信息。要获取
+        # 其他信息，也可以通过该行的一个独特的标识来定位。
+        if item.find('"domid":"Pl_Official_HisRelation__59"') > -1:
+            json_str = item
+
+    # 载入json格式字符串，得到一个dictionary
+    json_data = json.loads(json_str)
+    # print(fans_html)
+
+    # 使用BeautifulSoup解析，json_data['html']是网页数据，'lxml'是
+    # 解析html的引擎。关于BeautifulSoup的使用，大家可自行查看文档。
+    soup = BeautifulSoup(json_data['html'], 'lxml')
+
+    # 预处理，打印soup.prettify()的结果，就会看到一个格式化好的html文件
+    soup.prettify()
+    # print(soup.prettify())
+    # 写入文件
+    # f = open("html/test.html", "w", encoding="UTF-8")
+    # f.write(soup.prettify())
+
+    # 获取html文件里的粉丝
+    fans = []
+    for div_tag in soup.find_all('div'):
+        # 找到包含粉丝列表的div，下面是包含粉丝信息的网页数据形式
+        # <div class = 'follow_inner'>
+        #   <ul><li><dl>第一个粉丝的信息</dl></li></ul>
+        #   <ul><li><dl>第一个粉丝的信息</dl></li></ul>
+        #   ...
+        # </div>
+        if div_tag['class'] == ["follow_inner"]:
+            # 提取粉丝,'dl'标签里就是粉丝的信息
+            for fan_dl in div_tag.find_all('dl'):
+                # 解析粉丝
+                p = Fan(fan_dl)
+                # print(p.__dict__)
+                fans.append(p)
+            break
+
+    return fans
+```
+解析一个粉丝，首先给出一个粉丝的html源码，再给出解析这个html源码的代码。
+```html
+ <dl class="clearfix">
+  <dt class="mod_pic">
+   <a href="/u/6360029229?refer_flag=1005050008_" target="_blank" title="等的我都下雪了">
+    <img alt="等的我都下雪了" height="50" src="...jpg" usercard="id=6360029229&amp;refer_flag=1005050008_" width="50"/>
+   </a>
+  </dt>
+  <dd class="mod_info S_line1">
+   <div class="info_name W_fb W_f14">
+    <a class="S_txt1" href="/u/6360029229?refer_flag=1005050008_" target="_blank" usercard="id=6360029229&amp; ...">
+     等的我都下雪了
+    </a>
+    <a>
+     <i class="W_icon icon_female">
+     </i>
+    </a>
+   </div>
+   <div class="info_connect">
+    <span class="conn_type">
+     关注
+     <em class="count">
+      <a href="/6360029229/follow" target="_blank">
+       16
+      </a>
+     </em>
+    </span>
+    <span class="conn_type W_vline S_line1">
+     粉丝
+     <em class="count">
+      <a href="/6360029229/fans?current=fans" target="_blank">
+       4
+      </a>
+     </em>
+    </span>
+    <span class="conn_type W_vline S_line1">
+     微博
+     <em class="count">
+      <a href="/u/6360029229" target="_blank">
+       2
+      </a>
+     </em>
+    </span>
+   </div>
+   <div class="PCD_user_b S_bg1" node-type="follow_recommend_box" style="display:none">
+   </div>
+   <div class="info_add">
+    <em class="tit S_txt2">
+     地址
+    </em>
+    <span>
+     北京
+    </span>
+   </div>
+   <div class="info_from">
+    通过
+    <a class="from" href="http://app.weibo.com/t/feed/4JpANe">
+     微博搜索
+    </a>
+    关注
+   </div>
+  </dd>
+  <dd class="...">其他不解析的数据，我在这里删除了</dd>
+ </dl>
+```
+解析代码  
+```python
+class Fan(object):
+    def __init__(self, fan_dl=None):
+        """
+        解析一个粉丝的信息
+        :param fan_dl: 包含一个粉丝信息的<dl>标签的网页源码
+        """
+        self.name = None
+        self.gender = None
+        self.url = None
+        self.id = None
+        self.address = None
+        self.followNumber = None
+        self.fansNumber = None
+        self.assay = None
+        self.introduce = None
+        self.fromInfo = None
+        self.analysis(fan_dl)
+
+    def analysis(self, fan_dl):
+        self.analysis_name(fan_dl)
+        self.analysis_gender(fan_dl)
+        self.analysis_follow_and_fans_number(fan_dl)
+        self.analysis_city(fan_dl)
+        self.analysis_introduce(fan_dl)
+        # self.analysis_follow_way(fan_dl)
+        self.analysis_id(fan_dl)
+
+    def analysis_name(self, fan_dl):
+        # 获取fan_dl第一个<div>的第一个<a>里面的字符串，也就是粉丝的id
+        self.name = fan_dl.div.a.string
+
+    def analysis_gender(self, fan_dl):
+        info_tag = None
+        # 找到所有的<div ...>
+        for div_tag in fan_dl.find_all('div'):
+            # 如果<div>的class属性为'info_name W_fb W_f14'，就是
+            # 性别信息所在<div>(<div class="info_name W_fb W_f14">)
+            if div_tag['class'] == ["info_name", "W_fb", "W_f14"]:
+                info_tag = div_tag
+        if info_tag:
+            # 在info_tag中找到所有的<a ...>...</a>
+            for tag_a in info_tag.find_all('a'):
+                # 如果标签a包含<i ...>...<./i>这个标签，就是包含性别信息的标签a。
+                if tag_a.i:
+                    # 如果<i ...>的class属性等于'W_icon icon_female'，就是女性
+                    if tag_a.i['class'] == ["W_icon", "icon_female"]:
+                        self.gender = 'female'
+                        return
+                    # 如果<i ...>的class属性等于'W_icon icon_male'，就是男性
+                    elif tag_a.i['class'] == ["W_icon", "icon_male"]:
+                        self.gender = 'male'
+                        return
+                elif tag_a.get('class', None):
+                    # 如果标签<a>的class属性为'S_txt1'，就是包含了粉丝url信息的标签
+                    if tag_a['class'] == ['S_txt1']:
+                        # 获取href属性，得到粉丝的主页地址
+                        self.url = "https://weibo.com" + tag_a['href']
+                    pass
+
+    def analysis_id(self, fan_dl):
+        # 获取粉丝的id
+        # 第一个<dt>的第一个<a>的href属性
+        person_rel = fan_dl.dt.a['href']
+        self.id = person_rel[person_rel.find('=') + 1:-5] + person_rel[3:person_rel.find('?')]
+
+    def analysis_city(self, fan_dl):
+        # 后面的我就不写注释了，和前面的同理
+        for div_tag in fan_dl.find_all('div'):
+            if div_tag['class'] == ['info_add']:
+                address_tag = div_tag
+                self.address = address_tag.span.string
+
+    def analysis_follow_and_fans_number(self, fan_dl):
+        for div_tag in fan_dl.find_all('div'):
+            if div_tag['class'] == ["info_connect"]:
+                info_tag = div_tag
+                self.followNumber = info_tag.find_all('span')[0].em.string
+                self.fansNumber = info_tag.find_all('span')[1].em.a.string
+                self.assay = info_tag.find_all('span')[2].em.a.string
+
+    def analysis_introduce(self, fan_dl):
+        for div_tag in fan_dl.find_all('div'):
+            if div_tag['class'] == ['info_intro']:
+                introduce_tag = div_tag
+                self.introduce = introduce_tag.span.string
+
+    def analysis_follow_way(self, fan_dl):
+        for div_tag in fan_dl.find_all('div'):
+            if div_tag['class'] == ['info_from']:
+                from_tag = div_tag
+                self.fromInfo = from_tag.a.string
+
+    def __str__(self):
+        return "{name: %s, gender: %s,address: %s,id: %s, follow&fan: %s&%s,introduce: %s, url: %s}" % \
+              (self.name, self.gender, self.address, self.id, self.followNumber,
+               self.fansNumber, self.introduce, self.url)
+
+```
 
   2. 代码流程  
   

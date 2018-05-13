@@ -7,10 +7,12 @@ myHeader = {
     , "Accept-Language": "en-US,en;q=0.9"
     , "Connection": "keep-alive"
     , "Cookie":
-            "SINAGLOBAL=2459967737867.059.1525967400696; un=13281286897; wvr=6; YF-Ugrow-G0=57484c7c1ded49566c905773d5d00f82; YF-V5-G0=69afb7c26160eb8b724e8855d7b705c6; YF-Page-G0=b9004652c3bb1711215bacc0d9b6f2b5; _s_tentry=login.sina.com.cn; UOR=,,login.sina.com.cn; Apache=3919331192483.5815.1525970690169; ULV=1525970690234:2:2:2:3919331192483.5815.1525970690169:1525967400723; login_sid_t=869c6aa728878a1570c08f32c4b9b19d; cross_origin_proto=SSL; WBStorage=5548c0baa42e6f3d|undefined; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WFCn3AwfiBJQKEIXpN.PXZB5JpX5K2hUgL.Foq01K-41hz4e0M2dJLoIpHSwHSaUgphqg4XHsHjd8SXdNiD9Pet; ALF=1557593883; SSOLoginState=1526057884; SCF=Akc_apJiengacfo4mLJKL6QOZF2oE7-iOix_G1kSoya2F3NHxuiBnUWNbc_oImLbIVRp4w7kgpcNCTsS8d49aiA.; SUB=_2A2538bvMDeRhGeBN4lcY-CzFyDuIHXVUhqoErDV8PUNbmtBeLVTDkW9NRASQnAemyKhGdIxNIxQ7OXuCV1URd5WW; SUHB=0pHxyLCZgbrpU6"
+        "YF-Ugrow-G0=57484c7c1ded49566c905773d5d00f82; login_sid_t=ebbac7aa2632d8b9af2c73b48a46e341; cross_origin_proto=SSL; YF-V5-G0=572595c78566a84019ac3c65c1e95574; WBStorage=5548c0baa42e6f3d|undefined; _s_tentry=passport.weibo.com; wb_view_log=1680*10501; Apache=7413002826311.49.1526176052742; SINAGLOBAL=7413002826311.49.1526176052742; ULV=1526176052751:1:1:1:7413002826311.49.1526176052742:; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WFCn3AwfiBJQKEIXpN.PXZB5JpX5K2hUgL.Foq01K-41hz4e0M2dJLoIpHSwHSaUgphqg4XHsHjd8SXdNiD9Pet; ALF=1557712085; SSOLoginState=1526176086; SCF=ApTvMbD348JpEGqD2arduFaKNx5llw4f6OGa6CDgOw2Wf0qAlZzLGHVAEP9j1c_w5syi98Ln5T3rzKaAZYC5HA4.; SUB=_2A2538-kHDeRhGeBN4lcY-CzFyDuIHXVUiV3PrDV8PUNbmtBeLRTikW9NRASQnD9LgZV2Xv0GNC78BT3Rsr3H67Az; SUHB=0ebt5D0j1JLAhj; un=13281286897; wvr=6; YF-Page-G0=27b9c6f0942dad1bd65a7d61efdfa013"
+
     , "Host": "weibo.com"
     , "Referer":
-        "https://login.sina.com.cn/crossdomain2.php?action=login&entry=miniblog&r=https%3A%2F%2Fpassport.weibo.com%2Fwbsso%2Flogin%3Fssosavestate%3D1557483043%26url%3Dhttps%253A%252F%252Fweibo.com%252Fp%252F1005052970452952%252Ffollow%253Frelate%253Dfans%2526from%253D100505%2526wvr%253D6%2526mod%253Dheadfans%2526current%253Dfans%26display%3D0%26ticket%3DST-NjM5NTk4MjkzNw%3D%3D-1525947043-tc-8E15BE2BE58851E030308582AFE5E537-1%26retcode%3D0"
+        "https://weibo.com/6395982937/follow?rightmod=1&wvr=6"
+
     , "Upgrade-Insecure-Requests": "1"
     ,
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/65.0.3325.181 Chrome/65.0.3325.181 Safari/537.36"
