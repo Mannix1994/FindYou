@@ -124,8 +124,11 @@ def find_more_info_in_fan_assays(header, fan, key_words, school_name):
 
 def main():
     # 初始化数据库
-    db = DBManager.DBManager(host='118.126.117.238', port=3306, user='root',
-                             password='lazy1994', db_name='her_info')
+    db = DBManager.DBManager(host=config.my_db_config['host'],
+                             port=config.my_db_config['port'],
+                             user=config.my_db_config['user'],
+                             password=config.my_db_config['password'],
+                             db_name=config.my_db_config['db_name'])
     try:
         # 分析粉丝
         i = 1

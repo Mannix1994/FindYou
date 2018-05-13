@@ -15,16 +15,17 @@ myHeader = {
 
     , "Upgrade-Insecure-Requests": "1"
     ,
-    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/65.0.3325.181 Chrome/65.0.3325.181 Safari/537.36"
+    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 \
+    (KHTML, like Gecko) Ubuntu Chromium/65.0.3325.181 Chrome/65.0.3325.181 Safari/537.36"
 }
 
 # 要爬去的账号的粉丝列表页面的地址
 fans_url = 'https://weibo.com/p/1005052970452952/follow?relate=fans&from=100505&wvr=6&mod=headfans&current=fans#place'
 
-#
+# "李子柒"的id，可从粉丝业的网址里面找到
 bozhu_id = '1005052970452952'
 
-# 她的信息
+# 我朋友的信息
 my_angel_info = {'name_key_words': ['许', '珊', '许珊', '珊儿', '许珊儿'],
                  'gender': 'female',
                  'address': ['四川 成都', '四川 自贡'],
@@ -34,3 +35,10 @@ my_angel_info = {'name_key_words': ['许', '珊', '许珊', '珊儿', '许珊儿
                  'fans_min': 5,
                  'key_words': ['成都医学院', '成医'],  # 定义搜索关键词,越详细越准确越好
                  }
+
+# 数据库配置
+my_db_config = {'host': '118.126.117.238',
+                'port': 3306,
+                'user': 'root',
+                'password': 'lazy1994',
+                'db_name': 'her_info',}
