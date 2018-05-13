@@ -50,7 +50,7 @@ def get_html(header, the_url):
     return html_str
 ```
 其中的header就是网页的请求头(Request Headers)信息。可使用Chrome、Chromium、
-firefox浏览器来获取请求头信息。获取这个请求头部的步骤为：1.登录微博，进入
+Firefox浏览器来获取请求头信息。获取这个请求头部的步骤为：1.登录微博，进入
 你要下载的页面； 2、按F12进入开发模式；3. 点击"网络(Network)"选项卡；4. F5
 刷新当前页面；5. 在"网络(或Network)"选项卡中点击"HTML(或Doc)"；6. 点击一下
 你要下载的页面的网址；7. 点击"消息头(或Headers)"选项卡；8. 在该选项卡中的
