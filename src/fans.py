@@ -50,11 +50,11 @@ def get_fans_list(html_str):
         # 找到包含粉丝列表的div，下面是包含粉丝信息的网页数据形式
         # <div class = 'follow_inner'>
         #   <ul><li><dl>第一个粉丝的信息</dl></li></ul>
-        #   <ul><li><dl>第一个粉丝的信息</dl></li></ul>
+        #   <ul><li><dl>第二个粉丝的信息</dl></li></ul>
         #   ...
         # </div>
         if div_tag['class'] == ["follow_inner"]:
-            # 提取粉丝,'dl'标签里就是粉丝的信息
+            # 提取粉丝,<dl>标签里就是粉丝的信息
             for fan_dl in div_tag.find_all('dl'):
                 p = Fan(fan_dl)
                 # print(p.__dict__)
