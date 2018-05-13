@@ -55,7 +55,7 @@ Firefox浏览器来获取请求头信息。获取这个请求头部的步骤为�
 你要下载的页面； 2、按F12进入开发模式；3. 点击"网络(Network)"选项卡；4. F5
 刷新当前页面；5. 在"网络(或Network)"选项卡中点击"HTML(或Doc)"；6. 点击一下
 你要下载的页面的网址；7. 点击"消息头(或Headers)"选项卡；8. 在该选项卡中的
-"请求头(或Request Headers)"就是header里面需要的信息。header的格式再config
+"请求头(或Request Headers)"就是header里面需要的信息。header的格式在config
 .py中有例子。
 
   2. 解析"李子柒"的粉丝页  
