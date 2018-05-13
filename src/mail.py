@@ -5,8 +5,8 @@ import email.mime.multipart
 import email.mime.text
 
 # 这里需要导入自己的信息
-# import src.config as config
-import src.config_backup as config
+# from . import config
+from . import config_backup as config
 
 
 def send_email(mail_subject, mail_content):
