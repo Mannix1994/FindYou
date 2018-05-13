@@ -26,6 +26,7 @@
 pip install requests  # 获取网页
 pip install lxml  # 解析引擎，在BeautifulSoup4中被使用
 pip install BeautifulSoup4  # 解析HTML文件，从其中提取信息
+pip install mysqlclient  #MySQL数据库驱动
 ```
   1. 获取"李子柒"的粉丝页  
   
