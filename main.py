@@ -9,7 +9,10 @@ import src.util as util
 import src.fans as fans
 import src.DBManager as DBManager
 import src.mail as mail
-import src.config as config
+
+# 这里需要导入自己的信息
+# import src.config as config
+import src.config_backup as config
 
 
 def analyse_fans(header, the_url, her_info, db):
