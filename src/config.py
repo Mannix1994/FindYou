@@ -25,15 +25,15 @@ fans_url = 'https://weibo.com/p/1005052970452952/follow?relate=fans&from=100505&
 bozhu_id = '1005052970452952'
 
 # 我朋友的信息
-my_angel_info = {'name_key_words': ['徐', '娇', '徐娇', '娇娇'],  # 假如名字交徐娇，则组合出一些关键词
-                 'gender': 'female',  # 性别，男是'male'，女是'female'
-                 'address': ['四川 成都', '四川 自贡'],  # 分别是家乡地址和学校地址
-                 'follow_max': 300,     # 最大关注数量
-                 'follow_min': 5,       # 最小关注数量
-                 'fans_max': 300,       # 最大粉丝数量
-                 'fans_min': 5,         # 最小粉丝数量
-                 'key_words': ['北京大学', '北大'],  # 定义搜索关键词,越详细越准确越好
-                 }
+my_friend_info = {'name_key_words': ['徐', '娇', '徐娇', '娇娇'],  # 假如名字交徐娇，则组合出一些关键词
+                  'gender': 'female',  # 性别，男是'male'，女是'female'
+                  'address': ['四川 成都', '四川 自贡'],  # 分别是家乡地址和学校地址
+                  'follow_max': 300,  # 最大关注数量
+                  'follow_min': 5,  # 最小关注数量
+                  'fans_max': 300,  # 最大粉丝数量
+                  'fans_min': 5,  # 最小粉丝数量
+                  'key_words': ['北京大学', '北大'],  # 定义搜索关键词,越详细越准确越好
+                  }
 
 # 数据库配置
 my_db_config = {'host': '你的数据库服务器ip',
